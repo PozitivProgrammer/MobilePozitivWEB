@@ -312,7 +312,7 @@
 					$pageData .= "<tr><td>Размер:</td><td>$size</td></tr>";
 					$pageData .= "<tr><td>Расширение:</td><td>$extension</td></tr>";
 					$pageData .= "<tr><td>Дата редактирования:</td><td>$moddate</td></tr>";
-					$pageData .= "<tr><td colspan=\"2\"><a class=\"btn btn-primary\" href=\"http://1c.pozitivtelecom.ru/Files/$href\" role=\"button\" target=\"_blank\">Скачать</a></td></tr>";
+					$pageData .= "<tr><td colspan=\"2\"><a class=\"btn btn-primary\" href=\"http://1c.pozitivtelecom.ru:81/Files/$href\" role=\"button\" target=\"_blank\">Скачать</a></td></tr>";
 					return $pageData."</table></div>";
 				}
 				else

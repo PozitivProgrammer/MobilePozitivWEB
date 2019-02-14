@@ -52,7 +52,7 @@
     </div> <!-- /container -->	
 	
 	<footer class="footer">
-		<a href="http://1c.pozitivtelecom.ru/MobileApp/app.apk"><img src="res/apk-android_n.png" width="86" height="50"></a>
+		<a href="http://1c.pozitivtelecom.ru:81/MobileApp/app.apk"><img src="res/apk-android_n.png" width="86" height="50"></a>
     </footer>
 
     <!-- Bootstrap core JavaScript

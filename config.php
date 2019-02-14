@@ -1,7 +1,10 @@
-<?php
-	$debug = true;
+﻿<?php
+	$debug = false;
 	$site_path = "/";
-	$title = "Позитив телеком";
-	$ws_url = "http://192.168.234.3/TestMihail/ws/app.1cws?wsdl";
-	//$ws_url = "http://192.168.234.3/SkladPozitiv/ws/app.1cws?wsdl";
+	$title = "";
+	$ws_url = "http://192.168.234.3/SkladPozitiv/ws/app.1cws?wsdl";
 ?>
+
+
+
+
