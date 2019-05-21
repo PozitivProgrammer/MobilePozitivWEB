@@ -63,7 +63,7 @@
 					
 					$multi_elems_count = count($jsonResult->Data);
 					
-					$pageData .= "<tr><td colspan=\"6\"><input name=\"n_mmu_00\" id=\"mmu_00\" type=\"hidden\" value=\"$multi_elems_count\"/><button  name=\"n_mmu_0\" type=\"submit\" class=\"btn btn-primary\" style=\"width: 200px;\" id=\"mmu_0\" onclick=\"clear_multi_elems($multi_elems_count);\">Очистить</button></td></tr><tr><td colspan=\"6\"><button  name=\"n_mmu_1\" type=\"submit\" class=\"btn btn-primary\" style=\"width: 200px;\" id=\"mmu_1\" onclick=\"accept_multi_elems();\">Выбрать</button></td></tr>";
+					$pageData .= "<tr><td colspan=\"5\"><input name=\"n_mmu_00\" id=\"mmu_00\" type=\"hidden\" value=\"$multi_elems_count\"/><button  name=\"n_mmu_0\" type=\"submit\" class=\"btn btn-primary\" style=\"width: 200px;\" id=\"mmu_0\" onclick=\"clear_multi_elems($multi_elems_count);\">Очистить</button></td></tr><tr><td colspan=\"5\"><button  name=\"n_mmu_1\" type=\"submit\" class=\"btn btn-primary\" style=\"width: 200px;\" id=\"mmu_1\" onclick=\"accept_multi_elems();\">Выбрать</button></td></tr>";
 					
 					
 					
@@ -94,7 +94,7 @@
 						}
 						$sch_first = $sch + 1000;
 						$sch_second = $sch + 2000;
-						$pageData .= "<tr><td><img width=\"32\" height=\"32\" src=\"res/$image\"/></td><td><b>$name</b></td><td>$description</td><td><div id=\"mmu_$sch\">0</div><input id=\"code_mmu_$sch\" type=\"hidden\" value=\"$ref\"/><input id=\"odines_name_mmu_$sch\" type=\"hidden\" value=\"$name\"/></td><td><button  name=\"n_mmu_$sch_first\" type=\"submit\" class=\"btn btn-primary\" style=\"width:50px;\" id=\"mmu_$sch_first\" onclick=\"increase_element_count($sch);\">+</button></td><td><button  name=\"n_mmu_$sch_second\" type=\"submit\" class=\"btn btn-primary\" style=\"width:50px;\" id=\"mmu_$sch_second\" onclick=\"decrease_element_count($sch);\">-</button></td></tr>";
+						$pageData .= "<tr><td><img width=\"32\" height=\"32\" src=\"res/$image\"/></td><td><b>$name</b></td><td><div id=\"mmu_$sch\">0</div><input id=\"code_mmu_$sch\" type=\"hidden\" value=\"$ref\"/><input id=\"odines_name_mmu_$sch\" type=\"hidden\" value=\"$name\"/></td><td><button  name=\"n_mmu_$sch_first\" type=\"submit\" class=\"btn btn-primary\" style=\"width:50px;\" id=\"mmu_$sch_first\" onclick=\"increase_element_count($sch);\">+</button></td><td><button  name=\"n_mmu_$sch_second\" type=\"submit\" class=\"btn btn-primary\" style=\"width:50px;\" id=\"mmu_$sch_second\" onclick=\"decrease_element_count($sch);\">-</button></td></tr>";
 						$sch++;
 					}
 					$pageData .= "</table>";
