@@ -1,4 +1,7 @@
 <?php
+
+
+
 	require('config.php');
 	require('template.php');
 	require('web_service.php');	
@@ -110,6 +113,9 @@
 			elseif ($_GET['page'] == "datalist")
 			{
 				$jsonStrinSessionParameters = json_encode($_SESSION["SessionParameters"]);
+				
+				
+				
 				$soapResult = $ws_client->call("GetList", array("Ref" => $_GET['ref'], "SessionPar" => $jsonStrinSessionParameters));
 				if ($soapResult['result'])
 				{
@@ -269,6 +275,14 @@
 							$pageData .= "<button name=\"btn_".$jsonItem->Name."\" type=\"button\" class=\"btn btn-secondary\" id=\"".$jsonItem->Id."\" onclick=\"SelectData('".$jsonItem->Name."', '".$jsonItem->Description."','".$jsonItem->DataType."')\">Выбрать</button>";
 							$pageData .= "</span></div>";							
 							$pageData .= "<input name=\"val_".$jsonItem->Name."\" type=\"hidden\" value=\"".$jsonItem->Value->Ref."\">";
+							break;
+							case "multiselect":
+							$pageData .= "<div class=\"input-group\">";
+							$pageData .= "<input name=\"vie_".$jsonItem->Name."\" class=\"form-control\" type=\"text\" value=\"".$jsonItem->Value->viewVal."\" id=\"".$jsonItem->Id."\" disabled>";
+							$pageData .= "<span class=\"input-group-btn\">";
+							$pageData .= "<button name=\"btn_".$jsonItem->Name."\" type=\"button\" class=\"btn btn-secondary\" id=\"".$jsonItem->Id."\" onclick=\"SelectMultiData('".$jsonItem->Name."', '".$jsonItem->Description."','".$jsonItem->DataType."')\">Выбрать</button>";
+							$pageData .= "</span></div>";							
+							$pageData .= "<input name=\"val_".$jsonItem->Name."\" type=\"hidden\" value=\"".$jsonItem->Value->workVal."\">";
 							break;
 							//////////////////////////////////
 							case "file":

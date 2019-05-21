@@ -1,4 +1,5 @@
 ﻿<?php
+
 	session_start();
 	
 	require('config.php');
@@ -7,10 +8,14 @@
 	
 	$message = "";
 	
+	
+	
 	if (isset($_POST["action"]))
 	{
+		
 		if ($_POST["action"] == "login")
 		{
+			
 			$_SESSION["login"] = $_POST["login"];
 			$_SESSION["password"] = $_POST["password"];
 			
@@ -26,6 +31,7 @@
 			
 			if ($soapResult['result'] == true) 
 			{
+				
 				$jsonResult = json_decode($soapResult["data"]->return);
 			
 				if (isset($jsonResult->Data->Error))
@@ -53,6 +59,7 @@
 					{
 						session_set_cookie_params(60*60*24*30);
 					}
+					
 					exit();
 				}
 			}

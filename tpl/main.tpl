@@ -84,6 +84,106 @@
 					});
 				});
 			}
+			function SelectMultiData(name, title, ref)
+			{			
+				myModal.changeTitle('Данные загружаются...');
+				myModal.changeBody('<img src="res/anim_laoding.gif" class="rounded mx-auto d-block">');
+				myModal.showModal();
+				$.get('data.php?action=multidatalist&ref=' + ref, function(data) {
+					myModal.changeTitle(title);
+					myModal.changeBody(data);
+					
+					$("#mmu_1").attr("onclick","accept_multi_elems(\""+name+"\");");
+					
+					var curWorkVal = $("input[name=val_"+name+"]").val();
+					
+					var curWorkVal_array = curWorkVal.split(",");
+					
+					var curMultiElemsCount = parseInt($("#mmu_00").val());
+					
+					
+					
+					for (var i=0;i<curMultiElemsCount;i++){
+						var work_i = i+2;
+						for (var ii=0;ii<curWorkVal_array.length;ii++){
+							valCortage_array = curWorkVal_array[ii].split(":");
+							
+							if (valCortage_array.length > 1){
+								if (valCortage_array[0] == $("#code_mmu_"+work_i.toString()).val()){
+									$("#mmu_"+work_i.toString()).html( valCortage_array[1] );
+									break;
+								}
+							
+								
+							}
+							
+						
+						}
+
+					}					
+					
+					
+					
+					
+					
+				});
+			}
+			
+			function increase_element_count(p){
+				
+				
+				var cur_num = parseInt( $("#mmu_"+p.toString() ).html() );
+				cur_num++;
+				$("#mmu_"+p.toString() ).html(cur_num.toString() );
+				
+			}
+			
+			function decrease_element_count(p){
+				
+				
+				var cur_num = parseInt( $("#mmu_"+p.toString()).html() );
+				if (cur_num > 0){
+					cur_num--;
+					$("#mmu_"+p.toString() ).html(cur_num.toString() );
+				}
+				
+			}
+			
+			function clear_multi_elems(elems_cnt){
+				
+				var i = 0;
+				for (i = 0;i<elems_cnt;i++){
+					var cur_i = i+2;
+					$("#mmu_"+cur_i.toString() ).html("0");
+				}
+				
+			}
+			
+			function accept_multi_elems(name){
+				var curMultiElemsCount = parseInt($("#mmu_00").val());
+				var totalStr = "";
+				var viewTotalStr = "";
+				for (var i=0;i<curMultiElemsCount;i++){
+					var work_i = i+2;
+					if ($("#mmu_"+work_i.toString()).html() != "0"){
+						totalStr += ","+$("#code_mmu_"+work_i.toString()).val()+":"+$("#mmu_"+work_i.toString()).html();
+						viewTotalStr += ", "+$("#odines_name_mmu_"+work_i.toString()).val()+": "+$("#mmu_"+work_i.toString()).html();
+					}
+				}
+				if (totalStr.length >=1)
+					totalStr = totalStr.substring(1);
+				if (viewTotalStr.length >=2)
+					viewTotalStr = viewTotalStr.substring(2);
+				
+				
+				
+				$('input[name=vie_'+name+']').val(viewTotalStr);
+				$('input[name=val_'+name+']').val(totalStr);
+				myModal.hideModal();
+				
+			}
+			
+			
 		</script>
 		
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

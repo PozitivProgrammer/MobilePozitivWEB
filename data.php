@@ -5,39 +5,109 @@
 	
 	if (isset($_GET["action"]))
 	{
-		if ($_GET["action"] == "datalist")
-		{
-			$soapResult = $ws_client->call("GetList", array("Ref" => $_GET['ref']));
-			if ($soapResult['result'])
+		switch($_GET["action"]){
+			case "datalist":
 			{
-				$jsonResult = json_decode($soapResult["data"]->return);
-				$pageData = "<div class=\"list-group\">";
-				foreach ($jsonResult->Data as $jsonItem)
+				$soapResult = $ws_client->call("GetList", array("Ref" => $_GET['ref']));
+				if ($soapResult['result'])
 				{
-					$name = $jsonItem->Name;
-					$description = $jsonItem->Description == ""? "": " (".$jsonItem->Description.")";
-					$ref = $jsonItem->Ref;
-					$lref = $_GET['ref'];
-					switch ($jsonItem->Image)
-                    {
-						case "Document":
-						$image = "ic_document.png";
-						break;
-						case "DocumentDeleted":
-						$image = "ic_document_deleted.png";;
-						break;
-						case "DocumentAccept":
-						$image = "ic_document_accept.png";;
-						break;
+					$jsonResult = json_decode($soapResult["data"]->return);
+					
+					$pageData = "<div class=\"list-group\">";
+					foreach ($jsonResult->Data as $jsonItem)
+					{
+						$name = $jsonItem->Name;
+						$description = $jsonItem->Description == ""? "": " (".$jsonItem->Description.")";
+						$ref = $jsonItem->Ref;
+						$lref = $_GET['ref'];
+						if( property_exists($jsonItem,'Image' ) ){
+							switch ($jsonItem->Image)
+							{
+								case "Document":
+								$image = "ic_document.png";
+								break;
+								case "DocumentDeleted":
+								$image = "ic_document_deleted.png";;
+								break;
+								case "DocumentAccept":
+								$image = "ic_document_accept.png";;
+								break;
+							}
+						} else {
+							
+							$image = "ic_document.png";
+						}
+						$pageData .= "<a href=\"#\" class=\"list-group-item list-group-item-action datalist_item\" id=\"datalist_item\" value=\"$ref\"><img width=\"32\" height=\"32\" src=\"res/$image\">&nbsp;<b>$name</b>&nbsp;$description</a>";
 					}
-					$pageData .= "<a href=\"#\" class=\"list-group-item list-group-item-action datalist_item\" id=\"datalist_item\" value=\"$ref\"><img width=\"32\" height=\"32\" src=\"res/$image\">&nbsp;<b>$name</b>&nbsp;$description</a>";
+					$pageData .= "</div>";
 				}
-				$pageData .= "</div>";
+				else
+				{
+					//return $soapResult['data'];
+				}
 			}
-			else
+			break;
+			
+			
+			case "multidatalist":
 			{
-				//return $soapResult['data'];
+				
+				$soapResult = $ws_client->call("GetList", array("Ref" => $_GET['ref']));
+				if ($soapResult['result'])
+				{
+					$jsonResult = json_decode($soapResult["data"]->return);
+					
+					$pageData = "<div class=\"list-group\">";
+					
+					$pageData .= "<table>";
+					
+					$multi_elems_count = count($jsonResult->Data);
+					
+					$pageData .= "<tr><td colspan=\"6\"><input name=\"n_mmu_00\" id=\"mmu_00\" type=\"hidden\" value=\"$multi_elems_count\"/><button  name=\"n_mmu_0\" type=\"submit\" class=\"btn btn-primary\" style=\"width: 200px;\" id=\"mmu_0\" onclick=\"clear_multi_elems($multi_elems_count);\">Очистить</button></td></tr><tr><td colspan=\"6\"><button  name=\"n_mmu_1\" type=\"submit\" class=\"btn btn-primary\" style=\"width: 200px;\" id=\"mmu_1\" onclick=\"accept_multi_elems();\">Выбрать</button></td></tr>";
+					
+					
+					
+					
+					$sch = 2;
+					foreach ($jsonResult->Data as $jsonItem)
+					{
+						$name = $jsonItem->Name;
+						$description = $jsonItem->Description == ""? "": " (".$jsonItem->Description.")";
+						$ref = $jsonItem->Ref;
+						$lref = $_GET['ref'];
+						if( property_exists($jsonItem,'Image' ) ){
+							switch ($jsonItem->Image)
+							{
+								case "Document":
+								$image = "ic_document.png";
+								break;
+								case "DocumentDeleted":
+								$image = "ic_document_deleted.png";;
+								break;
+								case "DocumentAccept":
+								$image = "ic_document_accept.png";;
+								break;
+							}
+						} else {
+							
+							$image = "ic_document.png";
+						}
+						$sch_first = $sch + 1000;
+						$sch_second = $sch + 2000;
+						$pageData .= "<tr><td><img width=\"32\" height=\"32\" src=\"res/$image\"/></td><td><b>$name</b></td><td>$description</td><td><div id=\"mmu_$sch\">0</div><input id=\"code_mmu_$sch\" type=\"hidden\" value=\"$ref\"/><input id=\"odines_name_mmu_$sch\" type=\"hidden\" value=\"$name\"/></td><td><button  name=\"n_mmu_$sch_first\" type=\"submit\" class=\"btn btn-primary\" style=\"width:50px;\" id=\"mmu_$sch_first\" onclick=\"increase_element_count($sch);\">+</button></td><td><button  name=\"n_mmu_$sch_second\" type=\"submit\" class=\"btn btn-primary\" style=\"width:50px;\" id=\"mmu_$sch_second\" onclick=\"decrease_element_count($sch);\">-</button></td></tr>";
+						$sch++;
+					}
+					$pageData .= "</table>";
+					$pageData .= "</div>";
+					
+					
+				}
+				else
+				{
+					//return $soapResult['data'];
+				}
 			}
+			break;
 		}
 		echo $pageData;
 	}

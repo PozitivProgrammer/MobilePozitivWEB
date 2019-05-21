@@ -4,6 +4,7 @@ class ws_client_class
 {
 	function call($method, $param = array())
 	{
+		
 		require('config.php');
 		
 		$login = $_SESSION["login"];
@@ -12,6 +13,7 @@ class ws_client_class
 		$retVal = array();
 		
 		$base64LoginData = base64_encode(iconv(mb_detect_encoding($login, mb_detect_order(), true), "UTF-8", $login).":".iconv(mb_detect_encoding($password, mb_detect_order(), true), "UTF-8", $password));
+		
 		try 
 		{
 			$client = new SoapClient($ws_url, 
@@ -32,6 +34,7 @@ class ws_client_class
 		}
 		catch (SoapFault  $e)
 		{
+			
 			$retVal['result'] = false;
 			$retVal['data'] = "SOAP-ERROR: Авторизация не выполнена";
 			return $retVal;
