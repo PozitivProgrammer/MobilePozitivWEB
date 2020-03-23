@@ -8,7 +8,14 @@
 		switch($_GET["action"]){
 			case "datalist":
 			{
-				$soapResult = $ws_client->call("GetList", array("Ref" => $_GET['ref']));
+				
+				$soapResult = null;
+				if ( isset($_GET['groupref']) ){
+					$soapResult = $ws_client->call("GetParentList", array("Ref" => $_GET['ref'], "ParentRef" => $_GET['groupref']) );
+				} else {
+					$soapResult = $ws_client->call("GetList", array("Ref" => $_GET['ref']));
+				}
+				
 				if ($soapResult['result'])
 				{
 					$jsonResult = json_decode($soapResult["data"]->return);
@@ -19,6 +26,12 @@
 						$name = $jsonItem->Name;
 						$description = $jsonItem->Description == ""? "": " (".$jsonItem->Description.")";
 						$ref = $jsonItem->Ref;
+						
+						$isGroup = false;
+						if (isset($jsonItem->IsGroup)){
+							$isGroup = $jsonItem->IsGroup;
+						}
+						
 						$lref = $_GET['ref'];
 						if( property_exists($jsonItem,'Image' ) ){
 							switch ($jsonItem->Image)
@@ -32,12 +45,15 @@
 								case "DocumentAccept":
 								$image = "ic_document_accept.png";;
 								break;
+								case "Folder":
+								$image = "ic_folder.png";;
+								break;
 							}
 						} else {
 							
 							$image = "ic_document.png";
 						}
-						$pageData .= "<a href=\"#\" class=\"list-group-item list-group-item-action datalist_item\" id=\"datalist_item\" value=\"$ref\"><img width=\"32\" height=\"32\" src=\"res/$image\">&nbsp;<b>$name</b>&nbsp;$description</a>";
+						$pageData .= "<a href=\"#\" class=\"list-group-item list-group-item-action datalist_item\" id=\"datalist_item\" value=\"$ref\" isGroup=\"$isGroup\"><img width=\"32\" height=\"32\" src=\"res/$image\">&nbsp;<b>$name</b>&nbsp;$description</a>";
 					}
 					$pageData .= "</div>";
 				}

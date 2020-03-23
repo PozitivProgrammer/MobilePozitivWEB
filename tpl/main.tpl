@@ -56,7 +56,47 @@
 		<script>		
 			var myModal = new ModalApp.ModalProcess({ id: 'myModal', title: '' });
 			myModal.init();
-			function SelectData(name, title, ref)
+			
+			function UpdateData(name, title, ref, groupRef)
+			{			
+				myModal.changeTitle('Данные загружаются...');
+				myModal.changeBody('<img src="res/anim_laoding.gif" class="rounded mx-auto d-block">');
+				$.get('data.php?action=datalist&ref=' + ref + '&groupref=' + groupRef, function(data) {
+					myModal.changeTitle(title);
+					myModal.changeBody(data);
+					
+					$('#search_in_datalist').keyup(function(){
+						_this = this;						
+						$.each($('.datalist_item'), function() {
+							if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+								$(this).hide();
+								} else {
+								$(this).show();                
+							};
+						});						
+					});
+					
+					$('.datalist_item').click(function(){
+						if ($(this).attr("isGroup")){
+							UpdateData(name, title, ref, $(this).attr("value") );
+						} else {
+							
+							description = $(this).text();
+							ref = $(this).attr("value");	
+							$('input[name=vie_'+name+']').val(description);
+							$('input[name=val_'+name+']').val(ref);
+							myModal.hideModal();
+							
+						}
+						
+					});
+					
+				});
+			}
+			
+			
+			
+			function SelectData(name, title, ref, isTreeView = false)
 			{			
 				myModal.changeTitle('Данные загружаются...');
 				myModal.changeBody('<img src="res/anim_laoding.gif" class="rounded mx-auto d-block">');
@@ -75,13 +115,23 @@
 							};
 						});						
 					});
-					$('.datalist_item').click(function(){
-						description = $(this).text();
-						ref = $(this).attr("value");	
-						$('input[name=vie_'+name+']').val(description);
-						$('input[name=val_'+name+']').val(ref);
-						myModal.hideModal();
-					});
+					
+					if (isTreeView){					
+						
+						$('.datalist_item').click(function(){
+						
+							UpdateData( name, title, ref, $(this).attr("value") );
+							
+						});
+					} else {
+						$('.datalist_item').click(function(){
+							description = $(this).text();
+							ref = $(this).attr("value");	
+							$('input[name=vie_'+name+']').val(description);
+							$('input[name=val_'+name+']').val(ref);
+							myModal.hideModal();
+						});
+					}
 				});
 			}
 			function SelectMultiData(name, title, ref)

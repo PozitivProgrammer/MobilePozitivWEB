@@ -117,6 +117,7 @@
 				
 				
 				$soapResult = $ws_client->call("GetList", array("Ref" => $_GET['ref'], "SessionPar" => $jsonStrinSessionParameters));
+				
 				if ($soapResult['result'])
 				{
 					$jsonResult = json_decode($soapResult["data"]->return);
@@ -141,7 +142,7 @@
 				$soapResult = $ws_client->call("GetData", array("RefListMod" => $_GET['lref'], "Ref" => $_GET['ref']));
 				if ($soapResult['result'])
 				{
-					$pageData = "<form action=\"data.php\" method=\"post\"><div class=\"table-responsive\"><table class=\"table table-striped\">";
+					$pageData = "<form action=\"data.php\" method=\"post\" onsubmit=\"return confirm('Вы уверены?');\"><div class=\"table-responsive\"><table class=\"table table-striped\">";
 					$pageData .= "<input name=\"sys_pref\" type=\"hidden\" value=\"".$_SERVER['HTTP_REFERER']."\">";
 					$pageData .= "<input name=\"sys_lref\" type=\"hidden\" value=\"".$_GET['lref']."\">";
 					$pageData .= "<input name=\"sys_ref\" type=\"hidden\" value=\"".$_GET['ref']."\">";
@@ -276,6 +277,16 @@
 							$pageData .= "</span></div>";							
 							$pageData .= "<input name=\"val_".$jsonItem->Name."\" type=\"hidden\" value=\"".$jsonItem->Value->Ref."\">";
 							break;
+							
+							case "treedata":
+								$pageData .= "<div class=\"input-group\">";
+								$pageData .= "<input name=\"vie_".$jsonItem->Name."\" class=\"form-control\" type=\"text\" value=\"".$jsonItem->Value->Present."\" id=\"".$jsonItem->Id."\" disabled>";
+								$pageData .= "<span class=\"input-group-btn\">";
+								$pageData .= "<button name=\"btn_".$jsonItem->Name."\" type=\"button\" class=\"btn btn-secondary\" id=\"".$jsonItem->Id."\" onclick=\"SelectData('".$jsonItem->Name."', '".$jsonItem->Description."','".$jsonItem->DataType."',true)\">Выбрать</button>";
+								$pageData .= "</span></div>";							
+								$pageData .= "<input name=\"val_".$jsonItem->Name."\" type=\"hidden\" value=\"".$jsonItem->Value->Ref."\">";
+							break;
+							
 							case "multiselect":
 							$pageData .= "<div class=\"input-group\">";
 							$pageData .= "<input name=\"vie_".$jsonItem->Name."\" class=\"form-control\" type=\"text\" value=\"".$jsonItem->Value->viewVal."\" id=\"".$jsonItem->Id."\" disabled>";
